@@ -1,6 +1,72 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowUpRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { pageHead } from '@/lib/launchly';
-export const Route = createFileRoute('/how-it-works')({ head: () => pageHead('How it works', 'Discover a cause, make a simulated contribution, and follow the impact. Learn how LAUNCHLY reviews organizers and campaigns.'), component: HowItWorks });
-function HowItWorks() { return <div className="site-container"><div className="prose-page"><div className="section-label">Goodness, made simple</div><h1>Small acts.<br />Lasting impact.</h1><p>A better tomorrow starts with a cause you believe in. LAUNCHLY brings thoughtful fundraising and generous people together.</p><div className="steps-grid">{[['01','Discover a cause','Explore campaigns across education, healthcare, environment, hunger relief, animal welfare, and community development. Every public campaign is reviewed before it reaches you.'],['02','Make it possible','Create a donor account, choose a cause, and record a contribution. This college demonstration uses simulated donations only — you will never be charged.'],['03','Follow your impact','Your contribution appears in your personal history and updates the campaign’s funding progress. Each donor counts as one unique backer, no matter how often they support a cause.']].map(([n,title,description]) => <div key={n}><div className="step-number">{n} /</div><h3>{title}</h3><p>{description}</p></div>)}</div><h2>Have a good idea of your own?</h2><p>Register as an organizer. Once your account is approved, create a campaign and submit it for review. An administrator reviews each campaign before it is made public.</p><div className="hero-buttons"><Button asChild><Link to="/explore">Discover a cause <ArrowUpRight /></Link></Button><Button variant="outline" asChild><Link to="/create">Start a campaign <ArrowUpRight /></Link></Button></div></div></div>; }
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { pageHead } from "@/lib/launchly";
+export const Route = createFileRoute("/how-it-works")({
+  head: () =>
+    pageHead(
+      "How it works",
+      "Discover a cause, make a simulated contribution, and follow the impact. Learn how LAUNCHLY reviews organizers and campaigns.",
+    ),
+  component: HowItWorks,
+});
+function HowItWorks() {
+  return (
+    <div className="site-container">
+      <div className="prose-page">
+        <div className="section-label">Goodness, made simple</div>
+        <h1>
+          Small acts.
+          <br />
+          Lasting impact.
+        </h1>
+        <p>
+          A better tomorrow starts with a cause you believe in. LAUNCHLY brings thoughtful
+          fundraising and generous people together.
+        </p>
+        <div className="steps-grid">
+          {[
+            [
+              "01",
+              "Discover a cause",
+              "Explore campaigns across education, healthcare, environment, hunger relief, animal welfare, and community development. Every public campaign is reviewed before it reaches you.",
+            ],
+            [
+              "02",
+              "Make it possible",
+              "Create a donor account, choose a cause, and record a contribution. This college demonstration uses simulated donations only — you will never be charged.",
+            ],
+            [
+              "03",
+              "Follow your impact",
+              "Your contribution appears in your personal history and updates the campaign’s funding progress. Each donor counts as one unique backer, no matter how often they support a cause.",
+            ],
+          ].map(([n, title, description]) => (
+            <div key={n}>
+              <div className="step-number">{n} /</div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+            </div>
+          ))}
+        </div>
+        <h2>Have a good idea of your own?</h2>
+        <p>
+          Register as an organizer. Once your account is approved, create a campaign and submit it
+          for review. An administrator reviews each campaign before it is made public.
+        </p>
+        <div className="hero-buttons">
+          <Button asChild>
+            <Link to="/explore">
+              Discover a cause <ArrowUpRight />
+            </Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/create">
+              Start a campaign <ArrowUpRight />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -81,7 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "LAUNCHLY — Small acts. Lasting impact." },
-      { name: "description", content: "Discover meaningful causes and support community-led change with LAUNCHLY." },
+      {
+        name: "description",
+        content: "Discover meaningful causes and support community-led change with LAUNCHLY.",
+      },
       { name: "author", content: "LAUNCHLY" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -92,7 +95,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
@@ -120,7 +126,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider><Header /><main><Outlet /></main><Footer /></AuthProvider>
+      <AuthProvider>
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
