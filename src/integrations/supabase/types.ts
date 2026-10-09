@@ -14,16 +14,203 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaigns: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          goal_amount: number
+          id: string
+          image_url: string | null
+          is_sample: boolean
+          organizer_id: string | null
+          organizer_name: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description: string
+          goal_amount: number
+          id?: string
+          image_url?: string | null
+          is_sample?: boolean
+          organizer_id?: string | null
+          organizer_name?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          goal_amount?: number
+          id?: string
+          image_url?: string | null
+          is_sample?: boolean
+          organizer_id?: string | null
+          organizer_name?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      donations: {
+        Row: {
+          amount: number
+          campaign_id: string
+          created_at: string
+          donor_id: string
+          id: string
+          request_id: string
+        }
+        Insert: {
+          amount: number
+          campaign_id: string
+          created_at?: string
+          donor_id: string
+          id?: string
+          request_id: string
+        }
+        Update: {
+          amount?: number
+          campaign_id?: string
+          created_at?: string
+          donor_id?: string
+          id?: string
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "donations_donor_id_fkey"
+            columns: ["donor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      moderation_history: {
+        Row: {
+          admin_id: string
+          created_at: string
+          decision: string
+          id: string
+          target_id: string
+          target_type: string
+        }
+        Insert: {
+          admin_id: string
+          created_at?: string
+          decision: string
+          id?: string
+          target_id: string
+          target_type: string
+        }
+        Update: {
+          admin_id?: string
+          created_at?: string
+          decision?: string
+          id?: string
+          target_id?: string
+          target_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "moderation_history_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          approval_status: string
+          created_at: string
+          full_name: string
+          id: string
+        }
+        Insert: {
+          approval_status?: string
+          created_at?: string
+          full_name?: string
+          id: string
+        }
+        Update: {
+          approval_status?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      campaign_totals: {
+        Args: never
+        Returns: {
+          backers: number
+          campaign_id: string
+          raised: number
+        }[]
+      }
+      contribute: {
+        Args: { contribution: number; idempotency_key: string; target: string }
+        Returns: string
+      }
+      has_role: {
+        Args: {
+          requested: Database["public"]["Enums"]["app_role"]
+          uid: string
+        }
+        Returns: boolean
+      }
+      moderate: {
+        Args: { decision: string; kind: string; target: string }
+        Returns: undefined
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "donor" | "organizer" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +337,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["donor", "organizer", "admin"],
+    },
   },
 } as const
