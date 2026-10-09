@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791540922675,
+      "tag": "0000_launchly_platform",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791541221612,
+      "tag": "0001_restrict_internal_trigger_functions",
+      "breakpoints": true
+    }
+  ]
+}

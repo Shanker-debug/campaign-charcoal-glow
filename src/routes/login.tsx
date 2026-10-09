@@ -1,0 +1,95 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState, type FormEvent } from "react";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/components/launchly/auth";
+import { pageHead } from "@/lib/launchly";
+export const Route = createFileRoute("/login")({
+  head: () =>
+    pageHead(
+      "Welcome back",
+      "Log in to LAUNCHLY to support causes, manage campaigns and follow your contribution history.",
+    ),
+  validateSearch: (search: Record<string, unknown>): { next?: string } => ({
+    next:
+      typeof search["next"] === "string" &&
+      search["next"].startsWith("/") &&
+      !search["next"].startsWith("//")
+        ? search["next"]
+        : "",
+  }),
+  component: Login,
+});
+function Login() {
+  const { user, loading, reload } = useAuth();
+  const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (user && !loading) {
+      if (next) window.location.assign(next);
+      else void navigate({ to: "/dashboard" });
+    }
+  }, [user, loading]);
+  async function submit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setBusy(true);
+    setError("");
+    const form = new FormData(e.currentTarget);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: String(form.get("email")).trim(),
+      password: String(form.get("password")),
+    });
+    if (error) setError(error.message);
+    else await reload();
+    setBusy(false);
+  }
+  return (
+    <div className="site-container">
+      <div className="auth-layout">
+        <div className="section-label">Your next small act</div>
+        <h1>Welcome back.</h1>
+        <p>A little kindness goes a long way. Let’s pick up where you left off.</p>
+        <form onSubmit={submit}>
+          {error && (
+            <div role="alert" className="form-message error-message">
+              {error}
+            </div>
+          )}
+          <div className="field">
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="you@example.com"
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              minLength={8}
+              required
+              placeholder="Your password"
+            />
+          </div>
+          <Button disabled={busy} className="form-submit">
+            {busy ? "Signing in…" : "Log in"}
+            <ArrowRight />
+          </Button>
+        </form>
+        <div className="auth-switch">
+          New to LAUNCHLY? <Link to="/register">Create an account</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
